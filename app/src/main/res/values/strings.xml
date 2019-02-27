@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">AzureDataTestDocuments</string>
+    <string name="button_run_scheduler">cosmos-db-example</string>
+    <string name="database_dialogue">Enter a name of the new database</string>
+    <string name="document_collection_dialogue">Enter a name of the new document collection</string>
+    <string name="todo">TODO</string>
+    <string name="clear">Clear</string>
+    <string name="document_collections">Document Collections</string>
+    <string name="fetch">Fetch</string>
+    <string name="delete_database">Delete Database</string>
+    <string name="create_collection">Create Collection</string>
+    <string name="col2">Col2</string>
+    <string name="result_text_Default">Please focus camera to QR Code</string>
+</resources>
