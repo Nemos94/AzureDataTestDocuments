@@ -22,7 +22,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Values"
+        android:text="Problems"
         android:textAlignment="center"
 
         android:textSize="18sp"
