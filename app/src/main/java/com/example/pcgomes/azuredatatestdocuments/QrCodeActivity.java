@@ -93,7 +93,6 @@ public class QrCodeActivity extends Activity {
         listaValuesSensor = new HashMap<>();
         datasAlertas = new ArrayList<>();
 
-
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
@@ -113,15 +112,15 @@ public class QrCodeActivity extends Activity {
                             vibrator.vibrate(100);
                             _idDevice = qrcodes.valueAt(0).displayValue;
                             txtResult.setText(qrcodes.valueAt(0).displayValue);
-
+                            //make a query to Documents Azure
                             getQuery();
+                            //Barcode stop
+                            barcodeDetector.release();
 
                         }
 
                     });
-
                 }
-
             }
         });
 
@@ -145,20 +144,15 @@ public class QrCodeActivity extends Activity {
                     e.printStackTrace();
                 }
             }
-
             @Override
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 
             }
-
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 cameraSource.stop();
             }
         });
-
-
-
     }
 
     public void getQuery(){
