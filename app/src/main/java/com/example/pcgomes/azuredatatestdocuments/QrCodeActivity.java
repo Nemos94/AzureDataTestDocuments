@@ -172,23 +172,27 @@ public class QrCodeActivity extends Activity {
                     int i = 0;
                     for( Document d : response.getResource().getItems()){
                         if(response.getResource().getItems().get(i).get("deviceId").equals(_idDevice)) {
+                            //Alerta
                             Object alert = response.getResource().getItems().get(i).get("alert");
+                            //valor do sensor
                             Object valueSensor = response.getResource().getItems().get(i).get("value");
                             Object datavalor = response.getResource().getItems().get(i).get("data");
+                            //Transforma o valor do alerta do sensor decimal para int
+                            int valueSensorInt  = (int) Double.parseDouble(valueSensor.toString());
                             i++;
                             if(listaValuesSensor.isEmpty()){
-                                listaValues.add(Integer.valueOf(valueSensor.toString()));
+                                listaValues.add(valueSensorInt);
                                 listaValuesSensor.put(alert.toString(),listaValues );
                                 datasAlertas.add(datavalor.toString());
                             }else{
                                 if(listaValuesSensor.containsKey(alert.toString())){
                                     ArrayList<Integer> o =  listaValuesSensor.get(alert.toString());
-                                    o.add(Integer.valueOf(valueSensor.toString()));
+                                    o.add(valueSensorInt);
                                     listaValuesSensor.put(alert.toString(),o );
                                     datasAlertas.add(datavalor.toString());
                                 }else{
                                     listaValues = new ArrayList<>();
-                                    listaValues.add(Integer.valueOf(valueSensor.toString()));
+                                    listaValues.add(valueSensorInt);
                                     listaValuesSensor.put(alert.toString(), listaValues);
                                     datasAlertas.add(datavalor.toString());
                                 }
