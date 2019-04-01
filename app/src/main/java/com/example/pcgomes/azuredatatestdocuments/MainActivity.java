@@ -26,6 +26,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(c);
             }
         });
+
+        Button ar = findViewById(R.id.AugmentedRealityButton);
+        ar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent c = new Intent(getApplicationContext(), AugmentedReality.class);
+                startActivity(c);
+            }
+        });
         Button qr = findViewById(R.id.buttonQrCode);
         qr.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 "7E9XRXFSmbOf8EZw8Z2aeakp278EhvN1jPmksYlXlOpoaR5pLLBF7ppjFnYzUfwhBjQxsb7f21xGHd29NJaABg==", PermissionMode.All, onCallback(builder -> {
 
         }));
-
 
     }
 }

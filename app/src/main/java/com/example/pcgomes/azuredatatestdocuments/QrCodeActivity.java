@@ -165,7 +165,6 @@ public class QrCodeActivity extends Activity {
                     .from("Equipment")
                     .where("deviceId", _idDevice);
 
-
             AzureData.queryDocuments("Equipment", "valuesDatabase", query, DictionaryDocument.class,null, onCallback( response  -> {
                 Log.e(TAG, "Document list result: " + response.isSuccessful());
 
@@ -176,6 +175,7 @@ public class QrCodeActivity extends Activity {
                             Object alert = response.getResource().getItems().get(i).get("alert");
                             //valor do sensor
                             Object valueSensor = response.getResource().getItems().get(i).get("value");
+                            //data correspondente a cada valor
                             Object datavalor = response.getResource().getItems().get(i).get("data");
                             //Transforma o valor do alerta do sensor decimal para int
                             int valueSensorInt  = (int) Double.parseDouble(valueSensor.toString());
@@ -204,7 +204,6 @@ public class QrCodeActivity extends Activity {
                         }
                         dialog.cancel();
                     }
-
                 intent.putExtra("id_equipamento", _idDevice);
                 //intent.putExtra("listaValuesSensor", listaValuesSensor.get(coll.getId()).toString());
                 intent.putExtra("listaValuesSensor", listaValuesSensor);
@@ -212,7 +211,6 @@ public class QrCodeActivity extends Activity {
                 startActivity(intent);
 
             }));
-
         }
         catch (Exception ex) {
             ex.printStackTrace();
