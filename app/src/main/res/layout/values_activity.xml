@@ -45,18 +45,22 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="354dp">
 
             <TableLayout
                 android:id="@+id/tableInvoices"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="0dp"
-                android:stretchColumns="*"
-                >
-            </TableLayout>
+                android:stretchColumns="*"></TableLayout>
 
         </ScrollView>
+
+        <Button
+            android:id="@+id/arButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Augmented Reality" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

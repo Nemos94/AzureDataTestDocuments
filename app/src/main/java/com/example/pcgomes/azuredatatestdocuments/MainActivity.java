@@ -2,6 +2,7 @@ package com.example.pcgomes.azuredatatestdocuments;
 
 import com.azure.data.AzureData;
 import com.azure.data.model.PermissionMode;
+import com.example.pcgomes.azuredatatestdocuments.Augmented_Reality.AugmentedReality;
 
 import android.content.Intent;
 import android.os.Bundle;

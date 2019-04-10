@@ -1,13 +1,12 @@
 package com.example.pcgomes.azuredatatestdocuments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
@@ -16,20 +15,14 @@ import android.widget.TextView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.LinearLayout;
-import android.os.Process;
-import com.azure.data.AzureData;
-import com.azure.data.model.DictionaryDocument;
+
 import com.azure.data.model.Document;
-import com.azure.data.model.PermissionMode;
-import com.azure.data.model.Query;
+import com.example.pcgomes.azuredatatestdocuments.Augmented_Reality.AugmentedReality;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-
-import static com.azure.data.util.FunctionalUtils.onCallback;
 
 public class ValuesActivity extends Activity {
 
@@ -72,8 +65,22 @@ public class ValuesActivity extends Activity {
 
        mTableLayout = (TableLayout) findViewById(R.id.tableInvoices);
         mTableLayout.setStretchAllColumns(true);
-        loadData();
+      //  loadData();
+        TableProblems t = new TableProblems();
+        t.populateTable(this,mTableLayout,datasAlertas,listaValuesSensor);
 
+        Button ar = findViewById(R.id.arButton);
+        ar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AugmentedReality.class);
+               // intent.putExtra("id_equipamento", _idDevice);
+                //intent.putExtra("listaValuesSensor", listaValuesSensor.get(coll.getId()).toString());
+                intent.putExtra("listaValuesSensor", listaValuesSensor);
+                intent.putExtra("dataValues", datasAlertas);
+                startActivity(intent);
+            }
+        });
 
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -156,8 +163,6 @@ public class ValuesActivity extends Activity {
                 tv2.setTextColor(Color.parseColor("#000000"));
                 tv2.setText(row.invoiceDate.substring(0,20));
             }
-
-
             final LinearLayout layCustomer = new LinearLayout(this);
             layCustomer.setOrientation(LinearLayout.VERTICAL);
             layCustomer.setPadding(0, 10, 0, 10);

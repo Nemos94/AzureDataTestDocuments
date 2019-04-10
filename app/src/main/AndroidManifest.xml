@@ -59,6 +59,15 @@ s
 
         </activity>
         <activity android:name="QrCodeActivity" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+
+        </intent-filter>
+
+    </activity>
+
+        <activity android:name=".Augmented_Reality.AugmentedReality" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,10 +76,13 @@ s
 
         </activity>
 
-        <activity android:name="AugmentedReality" >
+        <activity android:name=".TableProblems" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
+
             </intent-filter>
+
         </activity>
 
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>

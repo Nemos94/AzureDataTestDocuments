@@ -72,7 +72,6 @@ public class QrCodeActivity extends Activity {
             }
         }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

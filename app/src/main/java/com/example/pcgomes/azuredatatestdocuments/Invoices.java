@@ -48,11 +48,10 @@ public class Invoices {
                 j++;
                 data[i] = row;
 
-                ;
+
             }
         }
         return data;
-
     }
 
     public String getSpecificValue(String key, int value, HashMap<String, ArrayList<String>> map) {
