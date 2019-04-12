@@ -11,24 +11,26 @@ public class Invoices {
     private int sizeNumberValuesList;
     private ArrayList<String> cause;
     private ArrayList<Integer> numberofValues;
+    private String nameEvent;
 
-    public InvoiceData[] getInvoices(HashMap<String, ArrayList<String>> map, ArrayList<String> _data) {
+    public InvoiceData[] getInvoices(HashMap<String, ArrayList<String>> map, ArrayList<String> _data,String events) {
 
         sizeNumberValuesList = 0;
         cause = new ArrayList<>();
         numberofValues = new ArrayList<>();
 
         for (Map.Entry<String, ArrayList<String>> val : map.entrySet()) {
-            sizeNumberValuesList += val.getValue().size();
-            cause.add(val.getKey().toString());
-            numberofValues.add(val.getValue().size());
-
+            if(val.getKey().equals(events) || events.equals("all")) {
+                sizeNumberValuesList += val.getValue().size();
+                cause.add(val.getKey().toString());
+                numberofValues.add(val.getValue().size());
+            }
         }
         InvoiceData[] data = new InvoiceData[sizeNumberValuesList];
         int j = 0;
         int z = 0;
         for (int i = 0; i < sizeNumberValuesList; i++) {
-            if (z != numberofValues.get(j)) {
+            if (z != numberofValues.get(j) && (cause.get(0).equals(events) || events.equals("all"))) {
                 InvoiceData row = new InvoiceData();
                 row.id = (i + 1);
                 row.cause = cause.get(j);
@@ -47,8 +49,6 @@ public class Invoices {
                 z++;
                 j++;
                 data[i] = row;
-
-
             }
         }
         return data;
@@ -59,6 +59,5 @@ public class Invoices {
         Object l = map.get(key).get(value);
         return l.toString();
     }
-
 
 }

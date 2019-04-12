@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -12,14 +11,11 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +32,9 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AugmentedReality extends AppCompatActivity {
 
@@ -57,13 +51,19 @@ public class AugmentedReality extends AppCompatActivity {
     ViewRenderable animal_name;
     ViewRenderable alert_view;
     TransformableNode lamp;
+    ArrayList<ViewRenderable> viewlistRenderable;
     ViewRenderable problems_equipment1;
     ViewRenderable problems_equipment2;
-
+    ViewRenderable problems_equipment3;
+    ViewRenderable problems_equipment4;
+    ViewRenderable problems_equipment5;
     //preencher a tabela
     private String _documentId;
     private ArrayList<String> datasAlertas;
     private HashMap<String, ArrayList<String>> listaValuesSensor;
+
+    private int j = 0;
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressWarnings({"AndroidApiChecker", "FutureReturnValueIgnored"})
@@ -73,6 +73,9 @@ public class AugmentedReality extends AppCompatActivity {
 
         TextView collectionIdTextView = findViewById(R.id.titleDocument);
         idnomes = new ArrayList<String>();
+
+
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             //_documentId = extras.getString("id_equipamento");
@@ -90,15 +93,35 @@ public class AugmentedReality extends AppCompatActivity {
         setContentView(R.layout.ar_fragment);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment);
 
+        //////////////////////Renderable da máquina/////////////////////////
         ViewRenderable.builder()
-                .setView(getApplicationContext(), R.layout.ar_table_equipment)
+                .setView(this, R.layout.ar_table_equipment)
                 .build().thenAccept(renderable -> animal_name = renderable );
+
+        //////////////////////Renderable dos problemas/////////////////////////
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
                 .build().thenAccept(renderable -> problems_equipment1 = renderable );
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
                 .build().thenAccept(renderable -> problems_equipment2 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_name_equipment)
+                .build().thenAccept(renderable -> problems_equipment3 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_name_equipment)
+                .build().thenAccept(renderable -> problems_equipment4 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_name_equipment)
+                .build().thenAccept(renderable -> problems_equipment5 = renderable );
+
+        viewlistRenderable = new ArrayList<ViewRenderable>();
+        viewlistRenderable.add(problems_equipment1);
+        viewlistRenderable.add(problems_equipment2);
+        viewlistRenderable.add(problems_equipment3);
+        viewlistRenderable.add(problems_equipment4);
+        viewlistRenderable.add(problems_equipment5);
+        /////////////////////////////////////////////////////////////////////////
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_alert_equipment)
                 .build().thenAccept(renderable -> alert_view = renderable );
@@ -144,19 +167,21 @@ public class AugmentedReality extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anchorNode.removeChild(anchorNode.getChildren().get(1));
+                //anchorNode.removeChild(anchorNode.getChildren().get(1));
                 //addName(anchorNode, lamp, "lamp");
                 addProblems(anchorNode, lamp,"lamp");
             }
         });
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void addName(AnchorNode anchorNode, TransformableNode model, String name) {
-        setNode(anchorNode, model, 0,0.5f, 0 ,animal_name);
+    private void addTable(AnchorNode anchorNode, TransformableNode model, String name) {
+
+        setNode(anchorNode, model, 0,anchorNode.getChildren().get(2).getLocalPosition().y + 0.2f, 0 ,animal_name);
+
         mTableLayout = (TableLayout) animal_name.getView();
         mTableLayout.setStretchAllColumns(true);
         TableProblems t = new TableProblems();
-        t.populateTable(this,mTableLayout,datasAlertas,listaValuesSensor);
+        t.populateTable(this,mTableLayout,datasAlertas,listaValuesSensor,name);
        // loadData(name);
     }
 
@@ -175,28 +200,41 @@ public class AugmentedReality extends AppCompatActivity {
         if(!idnomes.isEmpty()){
             for (int i = 0; i < idnomes.size(); i++){
                 if(i==0) {
-                    setNode(anchorNode, model, 0,model.getLocalPosition().y + 0.5f, 0 ,problems_equipment1);
+                    setNode(anchorNode, model, 0,anchorNode.getChildren().get(1).getLocalPosition().y + 0.2f, 0 ,problems_equipment1);
                     TextView txt_name1 = (TextView) problems_equipment1.getView();
                     txt_name1.setText(idnomes.get(i));
-
-                    txt_name1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addName(anchorNode, lamp, "Temperature");
-                        }
-                    });
+                    txt_name1.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(0));j++;});
                 }
                 if(i==1){
-                    setNode(anchorNode, model, 0.4f, anchorNode.getChildren().get(i).getLocalPosition().y, 0f ,problems_equipment2);
+                    j++;
+                    setNode(anchorNode, model, 0.3f, anchorNode.getChildren().get(1).getLocalPosition().y, 0f ,problems_equipment2);
                     TextView txt_name2 = (TextView) problems_equipment2.getView();
                     txt_name2.setText(idnomes.get(i));
-                    txt_name2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            addName(anchorNode, lamp, "Pressure");
-                        }
+                    txt_name2.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(1));j++;
                     });
                 }
+                if(i==2){
+                    j++;
+                    setNode(anchorNode, model, -0.3f, anchorNode.getChildren().get(1).getLocalPosition().y, 0f ,problems_equipment3);
+                    TextView txt_name3 = (TextView) problems_equipment3.getView();
+                    txt_name3.setText(idnomes.get(i));
+                    txt_name3.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(2));j++;});
+                }
+                if(i==3){
+                    j++;
+                    setNode(anchorNode, model, 0, anchorNode.getChildren().get(i).getLocalPosition().y, 0f ,problems_equipment4);
+                    TextView txt_name4 = (TextView) problems_equipment4.getView();
+                    txt_name4.setText(idnomes.get(i));
+                    txt_name4.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(3));j++;});
+                }
+                if(i==4){
+                    j++;
+                    setNode(anchorNode, model, 0.4f, anchorNode.getChildren().get(i).getLocalPosition().y, 0f ,problems_equipment5);
+                    TextView txt_name5 = (TextView) problems_equipment5.getView();
+                    txt_name5.setText(idnomes.get(i));
+                    txt_name5.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(4));j++;});
+                }
+
             }
         }
     }

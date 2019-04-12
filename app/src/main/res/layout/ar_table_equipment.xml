@@ -2,9 +2,9 @@
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/tableInvoices"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="1dp"
             android:stretchColumns="*">
         </TableLayout>
 
