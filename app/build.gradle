@@ -54,12 +54,16 @@ sceneform.asset('sampledata/Lamp post1.obj',
         'sampledata/Lamp post1.sfa',
         'src/main/assets/Lamp post1')
 
-sceneform.asset('sampledata/ARDUINO MEGA.obj',
-        'default',
-        'sampledata/ARDUINO MEGA.sfa',
-        'src/main/assets/ARDUINO MEGA')
+
 
 sceneform.asset('sampledata/nespresso_vertuo_plus.obj',
         'default',
         'sampledata/nespresso_vertuo_plus.sfa',
         'src/main/assets/nespresso_vertuo_plus')
+
+
+
+sceneform.asset('sampledata/machinecoffeeLabelsobj.obj',
+        'default',
+        'sampledata/machinecoffeeLabelsobj.sfa',
+        'src/main/assets/machinecoffeeLabelsobj')

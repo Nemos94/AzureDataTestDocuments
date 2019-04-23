@@ -34,7 +34,6 @@ import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class AugmentedReality extends AppCompatActivity {
 
@@ -47,10 +46,12 @@ public class AugmentedReality extends AppCompatActivity {
 
     ArFragment arFragment;
     ModelRenderable lampPostRenderable;
+    ModelRenderable arduinoPostRenderable;
 
     ViewRenderable animal_name;
     ViewRenderable alert_view;
     TransformableNode lamp;
+    TransformableNode arduino;
     ArrayList<ViewRenderable> viewlistRenderable;
     ViewRenderable problems_equipment1;
     ViewRenderable problems_equipment2;
@@ -127,7 +128,7 @@ public class AugmentedReality extends AppCompatActivity {
                 .build().thenAccept(renderable -> alert_view = renderable );
 
         ModelRenderable.builder()
-                .setSource(this, Uri.parse("nespresso_vertuo_plus.sfb"))
+                .setSource(this, Uri.parse("machinecoffeeLabelsobj.sfb"))
                 .build()
                 .thenAccept(renderable -> lampPostRenderable = renderable)
                 .exceptionally(throwable -> {
@@ -137,6 +138,8 @@ public class AugmentedReality extends AppCompatActivity {
                     toast.show();
                     return null;
                 });
+
+
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
@@ -150,6 +153,15 @@ public class AugmentedReality extends AppCompatActivity {
                     lamp.setParent(anchorNode);
                     lamp.setRenderable(lampPostRenderable);
                     lamp.select();
+
+//                    Anchor anchor2 = hitresult.createAnchor();
+//                    AnchorNode anchorNode2 = new AnchorNode(anchor2);
+//                    anchorNode2.setParent(arFragment.getArSceneView().getScene());
+//                    arduino = new TransformableNode(arFragment.getTransformationSystem());
+//                    arduino.setLocalPosition(new Vector3(0,lamp.getLocalPosition().y - 0.5f,0));
+//                    arduino.setParent(anchorNode2);
+//                    arduino.setRenderable(arduinoPostRenderable);
+//                    arduino.select();
 
                     //addName(anchorNode, lamp, "lamp");
                     addAlert(anchorNode, lamp);
@@ -170,6 +182,7 @@ public class AugmentedReality extends AppCompatActivity {
                 //anchorNode.removeChild(anchorNode.getChildren().get(1));
                 //addName(anchorNode, lamp, "lamp");
                 addProblems(anchorNode, lamp,"lamp");
+
             }
         });
     }
