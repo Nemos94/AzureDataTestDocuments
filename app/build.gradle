@@ -48,14 +48,6 @@ dependencies {
     apply plugin: 'com.google.ar.sceneform.plugin'
 }
 
-
-sceneform.asset('sampledata/Lamp post1.obj',
-        'default',
-        'sampledata/Lamp post1.sfa',
-        'src/main/assets/Lamp post1')
-
-
-
 sceneform.asset('sampledata/nespresso_vertuo_plus.obj',
         'default',
         'sampledata/nespresso_vertuo_plus.sfa',
@@ -63,7 +55,7 @@ sceneform.asset('sampledata/nespresso_vertuo_plus.obj',
 
 
 
-sceneform.asset('sampledata/machinecoffeeLabelsobj.obj',
+sceneform.asset('sampledata/machineCoffeeSmalLabelobj.obj',
         'default',
-        'sampledata/machinecoffeeLabelsobj.sfa',
-        'src/main/assets/machinecoffeeLabelsobj')
+        'sampledata/machineCoffeeSmalLabelobj.sfa',
+        'src/main/assets/machineCoffeeSmalLabelobj')

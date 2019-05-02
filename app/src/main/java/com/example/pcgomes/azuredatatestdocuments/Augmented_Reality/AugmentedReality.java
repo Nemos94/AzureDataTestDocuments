@@ -13,19 +13,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.azure.data.AzureData;
 import com.example.pcgomes.azuredatatestdocuments.MainActivity;
 import com.example.pcgomes.azuredatatestdocuments.R;
+import com.example.pcgomes.azuredatatestdocuments.Reports.Report;
 import com.example.pcgomes.azuredatatestdocuments.TableProblems;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
@@ -34,6 +37,8 @@ import com.google.ar.sceneform.ux.TransformableNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.azure.data.util.FunctionalUtils.onCallback;
 
 public class AugmentedReality extends AppCompatActivity {
 
@@ -51,19 +56,26 @@ public class AugmentedReality extends AppCompatActivity {
     ViewRenderable animal_name;
     ViewRenderable alert_view;
     TransformableNode lamp;
-    TransformableNode arduino;
     ArrayList<ViewRenderable> viewlistRenderable;
-    ViewRenderable problems_equipment1;
-    ViewRenderable problems_equipment2;
-    ViewRenderable problems_equipment3;
-    ViewRenderable problems_equipment4;
-    ViewRenderable problems_equipment5;
+    ViewRenderable resolvido_label1;
+    ViewRenderable resolvido_label2;
+    ViewRenderable resolvido_label3;
     //preencher a tabela
     private String _documentId;
     private ArrayList<String> datasAlertas;
     private HashMap<String, ArrayList<String>> listaValuesSensor;
+    private ArrayList<String> listproblemsSolved;
 
     private int j = 0;
+    private ViewRenderable alert_view_problem1;
+    private ViewRenderable alert_view_problem2;
+    private ViewRenderable alert_view_problem3;
+    private ViewRenderable correct_image1;
+    private ViewRenderable correct_image2;
+    private ViewRenderable correct_image3;
+    private String idMachine;
+    private Button reportButton;
+    private ViewRenderable instrutions_label;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -74,14 +86,14 @@ public class AugmentedReality extends AppCompatActivity {
 
         TextView collectionIdTextView = findViewById(R.id.titleDocument);
         idnomes = new ArrayList<String>();
-
-
+        listproblemsSolved = new ArrayList<String>();
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             //_documentId = extras.getString("id_equipamento");
             listaValuesSensor = (HashMap<String, ArrayList<String>>) extras.getSerializable("listaValuesSensor");
             datasAlertas = (ArrayList<String>) extras.getSerializable("dataValues");
+            idMachine = extras.getString("_documentId");
             for (String d: listaValuesSensor.keySet()) {
                 idnomes.add(d);
             }
@@ -99,36 +111,48 @@ public class AugmentedReality extends AppCompatActivity {
                 .setView(this, R.layout.ar_table_equipment)
                 .build().thenAccept(renderable -> animal_name = renderable );
 
-        //////////////////////Renderable dos problemas/////////////////////////
+        //////////////////////Renderable da resolução problemas/////////////////////////
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
-                .build().thenAccept(renderable -> problems_equipment1 = renderable );
+                .build().thenAccept(renderable -> resolvido_label1 = renderable );
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
-                .build().thenAccept(renderable -> problems_equipment2 = renderable );
+                .build().thenAccept(renderable -> resolvido_label2 = renderable );
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
-                .build().thenAccept(renderable -> problems_equipment3 = renderable );
+                .build().thenAccept(renderable -> resolvido_label3 = renderable );
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
-                .build().thenAccept(renderable -> problems_equipment4 = renderable );
-        ViewRenderable.builder()
-                .setView(this, R.layout.ar_name_equipment)
-                .build().thenAccept(renderable -> problems_equipment5 = renderable );
+                .build().thenAccept(renderable -> instrutions_label = renderable );
+        //////////////////////Renderable da resolução problemas/////////////////////////
 
-        viewlistRenderable = new ArrayList<ViewRenderable>();
-        viewlistRenderable.add(problems_equipment1);
-        viewlistRenderable.add(problems_equipment2);
-        viewlistRenderable.add(problems_equipment3);
-        viewlistRenderable.add(problems_equipment4);
-        viewlistRenderable.add(problems_equipment5);
+
         /////////////////////////////////////////////////////////////////////////
+        ////////////////////ALERT PROBLEM///////////////////////////////////////
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_alert_equipment)
                 .build().thenAccept(renderable -> alert_view = renderable );
-
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_alert_equipment)
+                .build().thenAccept(renderable -> alert_view_problem1 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_alert_equipment)
+                .build().thenAccept(renderable -> alert_view_problem2 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_alert_equipment)
+                .build().thenAccept(renderable -> alert_view_problem3 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_problem_solved)
+                .build().thenAccept(renderable -> correct_image1 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_problem_solved)
+                .build().thenAccept(renderable -> correct_image2 = renderable );
+        ViewRenderable.builder()
+                .setView(this, R.layout.ar_problem_solved)
+                .build().thenAccept(renderable -> correct_image3 = renderable );
+        /////////////////////////////////////////////////////////////////////////
         ModelRenderable.builder()
-                .setSource(this, Uri.parse("machinecoffeeLabelsobj.sfb"))
+                .setSource(this, Uri.parse("machineCoffeeSmalLabelobj.sfb"))
                 .build()
                 .thenAccept(renderable -> lampPostRenderable = renderable)
                 .exceptionally(throwable -> {
@@ -138,8 +162,6 @@ public class AugmentedReality extends AppCompatActivity {
                     toast.show();
                     return null;
                 });
-
-
 
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
@@ -153,49 +175,37 @@ public class AugmentedReality extends AppCompatActivity {
                     lamp.setParent(anchorNode);
                     lamp.setRenderable(lampPostRenderable);
                     lamp.select();
-
-//                    Anchor anchor2 = hitresult.createAnchor();
-//                    AnchorNode anchorNode2 = new AnchorNode(anchor2);
-//                    anchorNode2.setParent(arFragment.getArSceneView().getScene());
-//                    arduino = new TransformableNode(arFragment.getTransformationSystem());
-//                    arduino.setLocalPosition(new Vector3(0,lamp.getLocalPosition().y - 0.5f,0));
-//                    arduino.setParent(anchorNode2);
-//                    arduino.setRenderable(arduinoPostRenderable);
-//                    arduino.select();
-
-                    //addName(anchorNode, lamp, "lamp");
                     addAlert(anchorNode, lamp);
 
                 }
         );
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////Generate Report////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        reportButton = findViewById(R.id.reportButton);
+        reportButton.setOnClickListener(view -> {generateReport(listproblemsSolved,idMachine);
+        Toast.makeText(getBaseContext(),"Send report to DataBase",
+                Toast.LENGTH_SHORT).show();});
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addAlert(AnchorNode anchorNode, TransformableNode model) {
-        setNode(anchorNode, model, 0,0.6f,0, alert_view);
+        //setNode(anchorNode, model, 0,anchorNode.getChildren().get(0).getLocalPosition().y + 1.0f,0, alert_view);
 
-        ImageView img = (ImageView) alert_view.getView();
-        img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //anchorNode.removeChild(anchorNode.getChildren().get(1));
-                //addName(anchorNode, lamp, "lamp");
                 addProblems(anchorNode, lamp,"lamp");
 
-            }
-        });
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addTable(AnchorNode anchorNode, TransformableNode model, String name) {
 
-        setNode(anchorNode, model, 0,anchorNode.getChildren().get(2).getLocalPosition().y + 0.2f, 0 ,animal_name);
+        setNode(anchorNode, model, 0,anchorNode.getChildren().get(2).getLocalPosition().y + 0.5f, 0 ,animal_name);
 
         mTableLayout = (TableLayout) animal_name.getView();
         mTableLayout.setStretchAllColumns(true);
         TableProblems t = new TableProblems();
         t.populateTable(this,mTableLayout,datasAlertas,listaValuesSensor,name);
-       // loadData(name);
+
     }
 
     private void setNode(AnchorNode anchorNode, TransformableNode model, float x,float y,float z, ViewRenderable equipment) {
@@ -205,51 +215,147 @@ public class AugmentedReality extends AppCompatActivity {
         nameView.setParent(anchorNode);
         nameView.setRenderable(equipment);
         nameView.select();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void addProblems(AnchorNode anchorNode, TransformableNode model, String name) {
 
-        if(!idnomes.isEmpty()){
-            for (int i = 0; i < idnomes.size(); i++){
-                if(i==0) {
-                    setNode(anchorNode, model, 0,anchorNode.getChildren().get(1).getLocalPosition().y + 0.2f, 0 ,problems_equipment1);
-                    TextView txt_name1 = (TextView) problems_equipment1.getView();
-                    txt_name1.setText(idnomes.get(i));
-                    txt_name1.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(0));j++;});
-                }
-                if(i==1){
-                    j++;
-                    setNode(anchorNode, model, 0.3f, anchorNode.getChildren().get(1).getLocalPosition().y, 0f ,problems_equipment2);
-                    TextView txt_name2 = (TextView) problems_equipment2.getView();
-                    txt_name2.setText(idnomes.get(i));
-                    txt_name2.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(1));j++;
+        if (!idnomes.isEmpty()) {
+            for (int i = 0; i < idnomes.size(); i++) {
+                if (i == 0) {
+                    setNode(anchorNode, model, 0f
+                            , 0.5f, 0.35f, alert_view_problem1);
+                    ImageView img1 = (ImageView) alert_view_problem1.getView();
+                    img1.setOnClickListener(view -> {
+                        addTable(anchorNode, lamp, idnomes.get(0));
+                        j++;
                     });
-                }
-                if(i==2){
-                    j++;
-                    setNode(anchorNode, model, -0.3f, anchorNode.getChildren().get(1).getLocalPosition().y, 0f ,problems_equipment3);
-                    TextView txt_name3 = (TextView) problems_equipment3.getView();
-                    txt_name3.setText(idnomes.get(i));
-                    txt_name3.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(2));j++;});
-                }
-                if(i==3){
-                    j++;
-                    setNode(anchorNode, model, 0, anchorNode.getChildren().get(i).getLocalPosition().y, 0f ,problems_equipment4);
-                    TextView txt_name4 = (TextView) problems_equipment4.getView();
-                    txt_name4.setText(idnomes.get(i));
-                    txt_name4.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(3));j++;});
-                }
-                if(i==4){
-                    j++;
-                    setNode(anchorNode, model, 0.4f, anchorNode.getChildren().get(i).getLocalPosition().y, 0f ,problems_equipment5);
-                    TextView txt_name5 = (TextView) problems_equipment5.getView();
-                    txt_name5.setText(idnomes.get(i));
-                    txt_name5.setOnClickListener(view -> {addTable(anchorNode,lamp,idnomes.get(4));j++;});
-                }
 
+                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x - 0.1f
+                            , anchorNode.getChildren().get(1).getLocalPosition().y - 0.05f,
+                            0.35f, resolvido_label1);
+                    TextView t1 = (TextView) resolvido_label1.getView();
+                    t1.setOnClickListener(view -> {
+                        Toast.makeText(getBaseContext(),"Problem Solved",
+                                Toast.LENGTH_SHORT).show();
+                        listproblemsSolved.add(idnomes.get(1));
+                        changeImage(anchorNode,1,0f
+                                , 0.5f, 0.35f, correct_image1);
+                        correct_image1.getView();
+
+                    });
+
+                    //////////////////////Instruções//////////////////////
+                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x + 0.1f
+                            , anchorNode.getChildren().get(1).getLocalPosition().y - 0.05f,
+                            0.35f, instrutions_label);
+
+                    TextView t2 = (TextView) instrutions_label.getView();
+                    t2.setText("Instruções");
+                }////////////////////////////////////////////////////////////
+                if (i == 1) {
+                    setNode(anchorNode, model, 0f
+                            , 0.3f, 0.35f, alert_view_problem2);
+
+
+                    ImageView img0 = (ImageView) alert_view_problem2.getView();
+
+
+                    img0.setOnClickListener(view -> {
+                        addTable(anchorNode, lamp, idnomes.get(1));
+                        j++;
+                    });
+
+                    setNode(anchorNode, model, anchorNode.getChildren().get(4).getLocalPosition().x - 0.1f
+                            , anchorNode.getChildren().get(4).getLocalPosition().y - 0.05f,
+                            0.35f, resolvido_label2);
+                    TextView t5 = (TextView) resolvido_label2.getView();
+                    t5.setOnClickListener(view -> {
+                        Toast.makeText(getBaseContext(),"Problem Solved",
+                                Toast.LENGTH_SHORT).show();
+                        listproblemsSolved.add(idnomes.get(0));
+
+                        //////changeImage////////
+                        changeImage(anchorNode,4,0f
+                                , 0.3f, 0.35f, correct_image2);
+                        correct_image2.getView();
+
+                    });
+                    setNode(anchorNode, model, anchorNode.getChildren().get(4).getLocalPosition().x + 0.1f
+                            , anchorNode.getChildren().get(4).getLocalPosition().y - 0.05f,
+                            0.35f, instrutions_label);
+
+                    TextView t2 = (TextView) instrutions_label.getView();
+                    t2.setText("Instruções");
+                }////////////////////////////////////////////////////////////
+                if (i == 2) {
+                    j++;
+                    setNode(anchorNode, model, 0f
+                            , 0.1f, 0.35f, alert_view_problem3);
+                    ImageView img2 = (ImageView) alert_view_problem3.getView();
+                    img2.setOnClickListener(view -> {
+                        addTable(anchorNode, lamp, idnomes.get(2));
+                        j++;
+                    });
+                    //generate a report
+                    setNode(anchorNode, model, anchorNode.getChildren().get(7).getLocalPosition().x - 0.1f
+                            , anchorNode.getChildren().get(7).getLocalPosition().y - 0.05f,
+                            0.35f, resolvido_label3);
+                    TextView t4 = (TextView) resolvido_label3.getView();
+                    t4.setOnClickListener(view -> {
+                        Toast.makeText(getBaseContext(),"Problem Solved",
+                                Toast.LENGTH_SHORT).show();
+                        listproblemsSolved.add(idnomes.get(2));
+                        changeImage(anchorNode,7,0f
+                                , 0.1f, 0.35f,correct_image3);
+                        correct_image3.getView();
+
+                    });
+
+                    setNode(anchorNode, model, anchorNode.getChildren().get(7).getLocalPosition().x + 0.1f
+                            , anchorNode.getChildren().get(7).getLocalPosition().y - 0.05f,
+                            0.35f, instrutions_label);
+
+
+                    TextView t2 = (TextView) instrutions_label.getView();
+                    t2.setText("Instruções");
+
+
+
+                    if (i == 3) {
+                        j++;
+
+                    }
+                    if (i == 4) {
+                        j++;
+
+                    }
+
+                }
             }
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void changeImage(AnchorNode anchorNode, int nalert, float x, float y, float z, ViewRenderable correct_image) {
+
+        setNode(anchorNode, lamp, x,y,z , correct_image);
+        anchorNode.getChildren().get(nalert).setEnabled(false);
+        //anchorNode.removeChild(anchorNode.getChildren().get(nalert));
+
+        Toast.makeText(getBaseContext(),"Actualizadooooooo",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    public static void generateReport(ArrayList<String> listproblemsSolved, String idMachine) {
+        Report r = new Report(listproblemsSolved,"aaa","aaa", idMachine);
+
+        AzureData.createDocument(r,"Equipment", "valuesDatabase", onCallback(response -> {
+           if(response.isSuccessful()){
+               String d = "xlslsl";
+           }
+        }));
     }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {

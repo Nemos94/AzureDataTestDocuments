@@ -78,6 +78,7 @@ public class ValuesActivity extends Activity {
                 //intent.putExtra("listaValuesSensor", listaValuesSensor.get(coll.getId()).toString());
                 intent.putExtra("listaValuesSensor", listaValuesSensor);
                 intent.putExtra("dataValues", datasAlertas);
+                intent.putExtra("idmachine", _documentId);
                 startActivity(intent);
             }
         });

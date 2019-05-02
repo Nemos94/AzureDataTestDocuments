@@ -19,11 +19,38 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
-        <fragment android:name="com.google.ar.sceneform.ux.ArFragment"
+        tools:context=".MainActivity"
+        tools:layout_editor_absoluteX="47dp"
+        tools:layout_editor_absoluteY="236dp">
+
+        <fragment
             android:id="@+id/ux_fragment"
+            android:name="com.google.ar.sceneform.ux.ArFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|left" >
+
+    <Button
+        android:id="@+id/reportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/buttonshape"
+
+        android:text="Generate Report"
+        android:textSize="12dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:textColor="#FFFFFF"
+
+        />
+</LinearLayout>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>
