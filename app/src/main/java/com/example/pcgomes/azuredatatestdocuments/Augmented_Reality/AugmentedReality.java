@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,21 +23,28 @@ import android.widget.Toast;
 import com.azure.data.AzureData;
 import com.example.pcgomes.azuredatatestdocuments.MainActivity;
 import com.example.pcgomes.azuredatatestdocuments.R;
+import com.example.pcgomes.azuredatatestdocuments.Reports.Field_Report_Service;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Report;
 import com.example.pcgomes.azuredatatestdocuments.TableProblems;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
-import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.azure.data.util.FunctionalUtils.onCallback;
 
@@ -93,7 +101,7 @@ public class AugmentedReality extends AppCompatActivity {
             //_documentId = extras.getString("id_equipamento");
             listaValuesSensor = (HashMap<String, ArrayList<String>>) extras.getSerializable("listaValuesSensor");
             datasAlertas = (ArrayList<String>) extras.getSerializable("dataValues");
-            idMachine = extras.getString("_documentId");
+            idMachine = extras.getString("idmachine");
             for (String d: listaValuesSensor.keySet()) {
                 idnomes.add(d);
             }
@@ -183,10 +191,18 @@ public class AugmentedReality extends AppCompatActivity {
         /////////////////////////////////////Generate Report////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////////////////////////
         reportButton = findViewById(R.id.reportButton);
-        reportButton.setOnClickListener(view -> {generateReport(listproblemsSolved,idMachine);
+        reportButton.setOnClickListener(view -> {//generateReport(listproblemsSolved,idMachine);
         Toast.makeText(getBaseContext(),"Send report to DataBase",
-                Toast.LENGTH_SHORT).show();});
+                Toast.LENGTH_SHORT).show();Intent n = new Intent(getApplicationContext(),Field_Report_Service.class);
+                n.putExtra("idmachine",idMachine);n.putExtra("listproblemssolved",listproblemsSolved);
+                n.putExtra("date",getDate());startActivity(n);});
+    }
 
+    public String getDate(){
+        Date todayDate = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String todayString = formatter.format(todayDate);
+        return todayString;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -348,15 +364,7 @@ public class AugmentedReality extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
-    public static void generateReport(ArrayList<String> listproblemsSolved, String idMachine) {
-        Report r = new Report(listproblemsSolved,"aaa","aaa", idMachine);
 
-        AzureData.createDocument(r,"Equipment", "valuesDatabase", onCallback(response -> {
-           if(response.isSuccessful()){
-               String d = "xlslsl";
-           }
-        }));
-    }
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
