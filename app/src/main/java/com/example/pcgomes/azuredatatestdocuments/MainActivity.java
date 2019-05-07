@@ -4,6 +4,7 @@ import com.azure.data.AzureData;
 import com.azure.data.model.PermissionMode;
 import com.example.pcgomes.azuredatatestdocuments.Augmented_Reality.AugmentedReality;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Field_Report_Service;
+import com.example.pcgomes.azuredatatestdocuments.Reports.Get_Field_Report_Service;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         ar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent c = new Intent(getApplicationContext(), Field_Report_Service.class);
+                Intent c = new Intent(getApplicationContext(), Get_Field_Report_Service.class);
                 startActivity(c);
             }
         });

@@ -92,6 +92,12 @@ s
             </intent-filter>
         </activity>
 
+        <activity android:name=".Reports.Get_Field_Report_Service">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
         <meta-data android:name="com.google.android.gms.vision.DEPENDENCIES" android:value="barcode"/>
         <meta-data android:name="com.google.ar.core" android:value="required" />
     </application>

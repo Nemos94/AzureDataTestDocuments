@@ -28,29 +28,60 @@
             android:name="com.google.ar.sceneform.ux.ArFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|left" >
 
-    <Button
-        android:id="@+id/reportButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="2dp"
-        android:background="@drawable/buttonshape"
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            >
 
-        android:text="Generate Report"
-        android:textSize="12dp"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:textColor="#FFFFFF"
 
-        />
-</LinearLayout>
+                <Button
+                    android:id="@+id/reportButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:text="Generate Report"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/buttonshape"
+                android:text="Button"
+                android:visibility="invisible"/>
+
+                <Button
+                    android:id="@+id/getreportButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/buttonshape"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:text="Reports"
+                    android:textColor="#FFFFFF"
+                    android:textSize="12dp" />
+
+
+        </LinearLayout>
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

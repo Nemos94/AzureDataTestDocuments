@@ -13,9 +13,12 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +27,7 @@ import com.azure.data.AzureData;
 import com.example.pcgomes.azuredatatestdocuments.MainActivity;
 import com.example.pcgomes.azuredatatestdocuments.R;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Field_Report_Service;
+import com.example.pcgomes.azuredatatestdocuments.Reports.Get_Field_Report_Service;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Report;
 import com.example.pcgomes.azuredatatestdocuments.TableProblems;
 import com.google.ar.core.Anchor;
@@ -84,6 +88,8 @@ public class AugmentedReality extends AppCompatActivity {
     private String idMachine;
     private Button reportButton;
     private ViewRenderable instrutions_label;
+    private Button getreportButton;
+    private ArrayList<Report> reports;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -196,6 +202,22 @@ public class AugmentedReality extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();Intent n = new Intent(getApplicationContext(),Field_Report_Service.class);
                 n.putExtra("idmachine",idMachine);n.putExtra("listproblemssolved",listproblemsSolved);
                 n.putExtra("date",getDate());startActivity(n);});
+        ///////////////////////////////////////////////////////////////////////
+        ////////////////////////Get all reports////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////
+
+
+        getreportButton = findViewById(R.id.getreportButton);
+        getreportButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Get_Field_Report_Service g = new Get_Field_Report_Service();
+                g.createPopup(AugmentedReality.this, getreportButton);
+
+            }
+        });
     }
 
     public String getDate(){
