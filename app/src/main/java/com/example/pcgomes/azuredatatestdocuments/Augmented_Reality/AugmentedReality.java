@@ -24,10 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.azure.data.AzureData;
+import com.azure.data.model.DictionaryDocument;
+import com.azure.data.model.Document;
+import com.azure.data.model.Query;
 import com.example.pcgomes.azuredatatestdocuments.MainActivity;
 import com.example.pcgomes.azuredatatestdocuments.R;
+import com.example.pcgomes.azuredatatestdocuments.Reports.ExpandableList;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Field_Report_Service;
-import com.example.pcgomes.azuredatatestdocuments.Reports.Get_Field_Report_Service;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Report;
 import com.example.pcgomes.azuredatatestdocuments.TableProblems;
 import com.google.ar.core.Anchor;
@@ -39,6 +42,10 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -63,12 +70,10 @@ public class AugmentedReality extends AppCompatActivity {
 
     ArFragment arFragment;
     ModelRenderable lampPostRenderable;
-    ModelRenderable arduinoPostRenderable;
 
     ViewRenderable animal_name;
     ViewRenderable alert_view;
     TransformableNode lamp;
-    ArrayList<ViewRenderable> viewlistRenderable;
     ViewRenderable resolvido_label1;
     ViewRenderable resolvido_label2;
     ViewRenderable resolvido_label3;
@@ -77,6 +82,7 @@ public class AugmentedReality extends AppCompatActivity {
     private ArrayList<String> datasAlertas;
     private HashMap<String, ArrayList<String>> listaValuesSensor;
     private ArrayList<String> listproblemsSolved;
+    private Intent expandableIntent;
 
     private int j = 0;
     private ViewRenderable alert_view_problem1;
@@ -90,6 +96,10 @@ public class AugmentedReality extends AppCompatActivity {
     private ViewRenderable instrutions_label;
     private Button getreportButton;
     private ArrayList<Report> reports;
+    private  ArrayList<Report> reportList;
+    private  ArrayList<String> reportproblemsList;
+
+    private ProgressDialog dialog;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -100,8 +110,12 @@ public class AugmentedReality extends AppCompatActivity {
 
         TextView collectionIdTextView = findViewById(R.id.titleDocument);
         idnomes = new ArrayList<String>();
+        reportList = new ArrayList<>();
+        reportList = new ArrayList<>();
         listproblemsSolved = new ArrayList<String>();
-
+        reports = new ArrayList<Report>();
+        reportproblemsList = new ArrayList<String>();
+        expandableIntent = new Intent(AugmentedReality.this,ExpandableList.class);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             //_documentId = extras.getString("id_equipamento");
@@ -206,18 +220,81 @@ public class AugmentedReality extends AppCompatActivity {
         ////////////////////////Get all reports////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
 
-
         getreportButton = findViewById(R.id.getreportButton);
+
+        ExpandableList g = new ExpandableList();
         getreportButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
 
-                Get_Field_Report_Service g = new Get_Field_Report_Service();
-                g.createPopup(AugmentedReality.this, getreportButton);
-
+               // reports = g.getQuery(AugmentedReality.this, AugmentedReality.this);
+                if(reports == null){
+                    String g ="hdhdhdh";
+                    // g.createPopup(AugmentedReality.this,getreportButton,AugmentedReality.this);
+                }
+                else{
+                    getQuery(AugmentedReality.this,AugmentedReality.this);
+                }
             }
         });
+    }
+
+    public  ArrayList<Report> getQuery(Context c, Activity y){
+
+        try
+        {
+            dialog = ProgressDialog.show(c, "", "Loading. Please wait...", true);
+
+            Query query = Query.Companion.select()
+                    .from("Equipment")
+                    .where("idMachine", "MXChip")
+                    .andWhereNot("type"," ");
+
+            AzureData.queryDocuments("Equipment", "valuesDatabase", query, DictionaryDocument.class,null, onCallback(response  -> {
+                Log.e(TAG, "Document list result: " + response.isSuccessful());
+
+                if (response.isSuccessful()) {
+                    int i = 0;
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.getJsonData());
+                        JSONArray arr = jsonObject.getJSONArray("Documents");
+                        for( Document d : response.getResource().getItems()) {
+
+                            JSONObject jObj = arr.getJSONObject(i);
+                            String[] pr = jObj.get("problems").toString().split(" ");
+                            for (String dr : pr) {
+                                reportproblemsList.add(dr);
+                            }
+                            Report r = new Report(reportproblemsList,
+                                    jObj.get("problems").toString(),
+                                    jObj.get("idMachine").toString(),
+                                    jObj.get("idMachine").toString(),
+                                    jObj.get("Description").toString(),
+                                    jObj.get("date").toString(),
+                                    jObj.get("type").toString());
+                            reportList.add(r);
+                            r.pushAllReports(r);
+                            r.pushNamesProject(jObj.get("idMachine").toString());
+                            i++;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    dialog.cancel();
+                };
+
+                expandableIntent.putExtra("reports", reportList);
+                startActivity(expandableIntent);
+            }));
+
+
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return reportList;
     }
 
     public String getDate(){
