@@ -271,7 +271,7 @@ public class AugmentedReality extends AppCompatActivity {
                                     jObj.get("problems").toString(),
                                     jObj.get("idMachine").toString(),
                                     jObj.get("idMachine").toString(),
-                                    jObj.get("Description").toString(),
+                                    jObj.get("description").toString(),
                                     jObj.get("date").toString(),
                                     jObj.get("type").toString());
                             reportList.add(r);

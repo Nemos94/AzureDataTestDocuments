@@ -24,6 +24,7 @@ public class Field_Report_Service extends AppCompatActivity implements View.OnCl
     private ArrayList<String> listproblemssolved;
     private String date;
     private String typeReport;
+    private String stringtypeReport;
     private String description;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +34,11 @@ public class Field_Report_Service extends AppCompatActivity implements View.OnCl
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            //_documentId = extras.getString("id_equipamento");
-            
+            stringtypeReport = extras.getString("typeReport");
             id = extras.getString("idmachine");
             listproblemssolved = (ArrayList<String>) extras.getSerializable("listproblemssolved");
             date = (String) extras.getString("date");
+            description = extras.getString("description");
         }
 
         EditText problemsview = findViewById(R.id.problems);
@@ -62,9 +63,18 @@ public class Field_Report_Service extends AppCompatActivity implements View.OnCl
         install.setOnClickListener(this);
         Button other = findViewById(R.id.otherButton);
         other.setOnClickListener(this);
+        EditText dr = findViewById(R.id.edtInput);
+        if(dr.getText().toString().isEmpty())
+            dr.setText(description);
 
-
-
+        if(stringtypeReport.equals("Repair"))
+            repair.setBackgroundColor(Color.parseColor("#3299CC"));
+        if(stringtypeReport.equals("Maintenance"))
+            repair.setBackgroundColor(Color.parseColor("#3299CC"));
+        if(stringtypeReport.equals("Installation"))
+            repair.setBackgroundColor(Color.parseColor("#3299CC"));
+        if(stringtypeReport.equals("Other"))
+            repair.setBackgroundColor(Color.parseColor("#3299CC"));
     }
 
     public void generateReport(ArrayList<String> listproblemsSolved, String idMachine,
@@ -90,7 +100,7 @@ public class Field_Report_Service extends AppCompatActivity implements View.OnCl
                 typeReport = "Repair";
                 break;
             case R.id.MaintenanceButton:
-                typeReport = "maintenance";
+                typeReport = "Maintenance";
                 v.setBackgroundColor(Color.parseColor("#3299CC"));
                 break;
             case R.id.InstallationButton:

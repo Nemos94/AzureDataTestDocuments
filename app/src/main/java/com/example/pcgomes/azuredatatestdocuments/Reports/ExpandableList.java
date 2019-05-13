@@ -1,6 +1,5 @@
 package com.example.pcgomes.azuredatatestdocuments.Reports;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,20 +17,10 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
-import com.azure.data.AzureData;
-import com.azure.data.model.DictionaryDocument;
-import com.azure.data.model.Document;
-import com.azure.data.model.Query;
 import com.example.pcgomes.azuredatatestdocuments.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static com.azure.data.util.FunctionalUtils.onCallback;
 
 public class ExpandableList extends AppCompatActivity {
     private static ProgressDialog dialog;
@@ -40,8 +28,8 @@ public class ExpandableList extends AppCompatActivity {
     private ArrayList<Report> reports;
     private String s;
     private static final String TAG = "ExpandableList";
-
-
+    private HashMap<String, ArrayList<Report>> hashReports;
+    private ArrayList<Report> re;
     Point p;
 
     @Override
@@ -49,6 +37,7 @@ public class ExpandableList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_documents);
 
+        hashReports = new HashMap<String, ArrayList<Report>>();
         reports = new ArrayList<>();
 
         Bundle extras = getIntent().getExtras();
@@ -57,24 +46,40 @@ public class ExpandableList extends AppCompatActivity {
             reports = (ArrayList<Report>) extras.getSerializable("reports");
 
         }
-        createData(4, reports.size());
+        createHashMapReports(reports);
         ExpandableListView listView = (ExpandableListView)findViewById(R.id.listView);
         MyExpandableListAdapter adapter = new MyExpandableListAdapter(ExpandableList.this, groups);
         listView.setAdapter(adapter);
 
     }
+    public void createHashMapReports(ArrayList<Report> reports){
+        int z =0;
 
-    public static void createData(int nproblems, int reports) {
-        for (int j = 0; j < 4; j++) {
-            Group group = new Group("Test " + j);
-            for (int i = 0; i < reports ; i++) {
-                group.children.add("Sub Item" + i);
+        for(int i = 0; i < reports.size() ; i++) {
+            if (!hashReports.containsKey(reports.get(i).gettypeReport())) {
+                re = new ArrayList<Report>();
+                re.add(reports.get(i));
+                hashReports.put(reports.get(i).gettypeReport(), re);
+            }else{
+                ArrayList<Report> h = hashReports.get(reports.get(i).gettypeReport());
+                h.add(reports.get(i));
+                hashReports.put(reports.get(i).gettypeReport(), h);
+            }
+        }
+        createData(hashReports.size(),hashReports, 4);
+    }
+    public static void createData(int nproblems,HashMap<String, ArrayList<Report>> re,int reports) {
+        for (int j = 0; j < nproblems; j++) {
+            Group group = new Group(re.keySet().toArray()[j].toString());
+            for (Report xs : re.get(re.keySet().toArray()[j].toString())) {
+                //group.children.add("Sub Item" + i);
+                group.children.add(xs.getId());
+                group.report.add(xs);
+
             }
             groups.append(j, group);
         }
     }
-
-
 
 
     public void createPopup(Context c, Button getreportButton,Activity y) throws InterruptedException {
