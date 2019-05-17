@@ -19,6 +19,7 @@ android {
         }
     }
 
+
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/spring.tooling'
@@ -44,8 +45,12 @@ dependencies {
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.google.android.gms:play-services-vision:11.6.0'
-    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.7.0"
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.9.0"
+    implementation "com.google.ar.sceneform:animation:1.9.0"
+
+
     apply plugin: 'com.google.ar.sceneform.plugin'
+
 }
 
 sceneform.asset('sampledata/nespresso_vertuo_plus.obj',
@@ -59,3 +64,13 @@ sceneform.asset('sampledata/machineCoffeeSmalLabelobj.obj',
         'default',
         'sampledata/machineCoffeeSmalLabelobj.sfa',
         'src/main/assets/machineCoffeeSmalLabelobj')
+
+
+
+
+
+
+sceneform.asset('sampledata/assemblymachine62.fbx',
+        'default',
+        'sampledata/assemblymachine62.sfa',
+        'src/main/res/raw/assemblymachine62')

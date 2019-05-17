@@ -2,6 +2,7 @@ package com.example.pcgomes.azuredatatestdocuments;
 
 import com.azure.data.AzureData;
 import com.azure.data.model.PermissionMode;
+import com.example.pcgomes.azuredatatestdocuments.Animations.Inicialize;
 import com.example.pcgomes.azuredatatestdocuments.Augmented_Reality.AugmentedReality;
 import com.example.pcgomes.azuredatatestdocuments.Reports.ExpandableList;
 import com.example.pcgomes.azuredatatestdocuments.Reports.Field_Report_Service;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         ar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent c = new Intent(getApplicationContext(), ExpandableList.class);
+                Intent c = new Intent(getApplicationContext(), Inicialize.class);
                 startActivity(c);
             }
         });

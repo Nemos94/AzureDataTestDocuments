@@ -5,11 +5,14 @@ import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,6 +30,7 @@ import com.azure.data.AzureData;
 import com.azure.data.model.DictionaryDocument;
 import com.azure.data.model.Document;
 import com.azure.data.model.Query;
+import com.example.pcgomes.azuredatatestdocuments.Animations.Inicialize;
 import com.example.pcgomes.azuredatatestdocuments.MainActivity;
 import com.example.pcgomes.azuredatatestdocuments.R;
 import com.example.pcgomes.azuredatatestdocuments.Reports.ExpandableList;
@@ -93,6 +97,7 @@ public class AugmentedReality extends AppCompatActivity {
     private ViewRenderable correct_image3;
     private String idMachine;
     private Button reportButton;
+    private Button animationButton;
     private ViewRenderable instrutions_label;
     private Button getreportButton;
     private ArrayList<Report> reports;
@@ -219,6 +224,7 @@ public class AugmentedReality extends AppCompatActivity {
         ///////////////////////////////////////////////////////////////////////
         ////////////////////////Get all reports////////////////////////////////
         ///////////////////////////////////////////////////////////////////////
+        animationButton = findViewById(R.id.intructionsButton);
 
         getreportButton = findViewById(R.id.getreportButton);
 
@@ -237,6 +243,11 @@ public class AugmentedReality extends AppCompatActivity {
                     getQuery(AugmentedReality.this,AugmentedReality.this);
                 }
             }
+        });
+
+        animationButton.setOnClickListener(v -> {
+            Intent animationIntent = new Intent(this,Inicialize.class);
+            startActivity(animationIntent);
         });
     }
 

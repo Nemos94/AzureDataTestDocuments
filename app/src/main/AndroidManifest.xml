@@ -48,7 +48,7 @@
 
 
             </intent-filter>
-s
+
         </activity>
         <activity android:name="ValuesActivity" >
             <intent-filter>
@@ -101,6 +101,11 @@ s
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+            </intent-filter>
+        </activity>
+        <activity android:name=".Animations.Inicialize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 

@@ -34,11 +34,17 @@ public class Field_Report_Service extends AppCompatActivity implements View.OnCl
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            stringtypeReport = extras.getString("typeReport");
+            if(extras.getString("typeReport") == null)
+                stringtypeReport = " ";
+            else
+                stringtypeReport = extras.getString("typeReport");
             id = extras.getString("idmachine");
             listproblemssolved = (ArrayList<String>) extras.getSerializable("listproblemssolved");
             date = (String) extras.getString("date");
-            description = extras.getString("description");
+            if(extras.getString("description") == null)
+                description = " ";
+            else
+                description = extras.getString("description");
         }
 
         EditText problemsview = findViewById(R.id.problems);
