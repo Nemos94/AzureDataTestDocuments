@@ -74,3 +74,8 @@ sceneform.asset('sampledata/assemblymachine62.fbx',
         'default',
         'sampledata/assemblymachine62.sfa',
         'src/main/res/raw/assemblymachine62')
+
+sceneform.asset('sampledata/animationswithtext.fbx',
+        'default',
+        'sampledata/animationswithtext.sfa',
+        'src/main/res/raw/animationswithtext')

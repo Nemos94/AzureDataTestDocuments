@@ -1,0 +1,14 @@
+{
+  "client_id" : "58555039-e4e3-4c88-a006-6958cbff4952",
+  "authorization_user_agent" : "DEFAULT",
+  "redirect_uri" : "msauth://com.example.pcgomes.azuredatatestdocuments/K16%2BKlWKyGjvpsQ57YciiMKJkZ8%3D",
+  "authorities" : [
+    {
+      "type": "AAD",
+      "audience": {
+        "type": "AzureADandPersonalMicrosoftAccount",
+        "tenant_id": "common"
+      }
+    }
+  ]
+}
