@@ -26,7 +26,31 @@
             </intent-filter>
         </activity>
 
+        <!--Intent filter to catch Microsoft's callback after Sign In-->
+        <activity
+            android:name="com.microsoft.identity.client.BrowserTabActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <!--Add in your scheme/host from registered redirect URI-->
+                <data android:scheme="msauth"
+                    android:host="com.example.pcgomes.azuredatatestdocuments"
+                    android:path="/K16+KlWKyGjvpsQ57YciiMKJkZ8=" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="DatabaseActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".Reports.Profile" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

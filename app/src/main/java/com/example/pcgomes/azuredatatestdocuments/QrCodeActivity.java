@@ -76,7 +76,10 @@ public class QrCodeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        AzureData.configure(getApplicationContext(), "iotprivatenewsqldb",
+                "7E9XRXFSmbOf8EZw8Z2aeakp278EhvN1jPmksYlXlOpoaR5pLLBF7ppjFnYzUfwhBjQxsb7f21xGHd29NJaABg==", PermissionMode.All, onCallback(builder -> {
 
+                }));
         setContentView(R.layout.qrcode_activity);
 
         cameraPreview = findViewById(R.id.cameraPreview);
