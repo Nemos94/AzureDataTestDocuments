@@ -5,23 +5,18 @@ import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,14 +47,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
 
 import static com.azure.data.util.FunctionalUtils.onCallback;
 
@@ -146,13 +137,13 @@ public class AugmentedReality extends AppCompatActivity {
 
         //////////////////////Renderable da resolução problemas/////////////////////////
         ViewRenderable.builder()
-                .setView(this, R.layout.ar_name_equipment)
+                .setView(this, R.layout.ar_problem_solved)
                 .build().thenAccept(renderable -> resolvido_label1 = renderable );
         ViewRenderable.builder()
-                .setView(this, R.layout.ar_name_equipment)
+                .setView(this, R.layout.ar_problem_solved)
                 .build().thenAccept(renderable -> resolvido_label2 = renderable );
         ViewRenderable.builder()
-                .setView(this, R.layout.ar_name_equipment)
+                .setView(this, R.layout.ar_problem_solved)
                 .build().thenAccept(renderable -> resolvido_label3 = renderable );
         ViewRenderable.builder()
                 .setView(this, R.layout.ar_name_equipment)
@@ -195,12 +186,13 @@ public class AugmentedReality extends AppCompatActivity {
                     toast.show();
                     return null;
                 });
-
+        long minutes = System.currentTimeMillis();
         arFragment.setOnTapArPlaneListener(
                 (HitResult hitresult, Plane plane, MotionEvent motionevent) -> {
                     if (lampPostRenderable == null){
                         return;
                     }
+                    long minutesleft = System.currentTimeMillis();
                     Anchor anchor = hitresult.createAnchor();
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
@@ -209,7 +201,8 @@ public class AugmentedReality extends AppCompatActivity {
                     lamp.setRenderable(lampPostRenderable);
                     lamp.select();
                     addAlert(anchorNode, lamp);
-
+                    Toast.makeText(getBaseContext(),"Time: " + String.valueOf(minutesleft-minutes),
+                            Toast.LENGTH_SHORT).show();
                 }
         );
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -264,7 +257,7 @@ public class AugmentedReality extends AppCompatActivity {
 
             AzureData.queryDocuments("Equipment", "valuesDatabase", query, DictionaryDocument.class,null, onCallback(response  -> {
                 Log.e(TAG, "Document list result: " + response.isSuccessful());
-
+            
                 if (response.isSuccessful()) {
                     int i = 0;
                     JSONObject jsonObject = null;
@@ -358,10 +351,10 @@ public class AugmentedReality extends AppCompatActivity {
                         j++;
                     });
 
-                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x - 0.1f
-                            , anchorNode.getChildren().get(1).getLocalPosition().y - 0.05f,
+                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x + 0.1f
+                            , anchorNode.getChildren().get(1).getLocalPosition().y + 0.01f,
                             0.35f, resolvido_label1);
-                    TextView t1 = (TextView) resolvido_label1.getView();
+                    ImageView t1 = (ImageView) resolvido_label1.getView();
                     t1.setOnClickListener(view -> {
                         Toast.makeText(getBaseContext(),"Problem Solved",
                                 Toast.LENGTH_SHORT).show();
@@ -369,16 +362,17 @@ public class AugmentedReality extends AppCompatActivity {
                         changeImage(anchorNode,1,0f
                                 , 0.5f, 0.35f, correct_image1);
                         correct_image1.getView();
+                        anchorNode.getChildren().get(2).setEnabled(false);
 
                     });
 
                     //////////////////////Instruções//////////////////////
-                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x + 0.1f
-                            , anchorNode.getChildren().get(1).getLocalPosition().y - 0.05f,
-                            0.35f, instrutions_label);
-
-                    TextView t2 = (TextView) instrutions_label.getView();
-                    t2.setText("Instruções");
+//                    setNode(anchorNode, model, anchorNode.getChildren().get(1).getLocalPosition().x + 0.1f
+//                            , anchorNode.getChildren().get(1).getLocalPosition().y - 0.05f,
+//                            0.35f, instrutions_label);
+//
+//                    TextView t2 = (TextView) instrutions_label.getView();
+//                    t2.setText("Instruções");
                 }////////////////////////////////////////////////////////////
                 if (i == 1) {
                     setNode(anchorNode, model, 0f
@@ -393,27 +387,28 @@ public class AugmentedReality extends AppCompatActivity {
                         j++;
                     });
 
-                    setNode(anchorNode, model, anchorNode.getChildren().get(4).getLocalPosition().x - 0.1f
-                            , anchorNode.getChildren().get(4).getLocalPosition().y - 0.05f,
+                    setNode(anchorNode, model, anchorNode.getChildren().get(3).getLocalPosition().x + 0.1f
+                            , anchorNode.getChildren().get(3).getLocalPosition().y + 0.01f,
                             0.35f, resolvido_label2);
-                    TextView t5 = (TextView) resolvido_label2.getView();
+                    ImageView t5 = (ImageView) resolvido_label2.getView();
                     t5.setOnClickListener(view -> {
                         Toast.makeText(getBaseContext(),"Problem Solved",
                                 Toast.LENGTH_SHORT).show();
                         listproblemsSolved.add(idnomes.get(0));
 
                         //////changeImage////////
-                        changeImage(anchorNode,4,0f
+                        changeImage(anchorNode,3,0f
                                 , 0.3f, 0.35f, correct_image2);
                         correct_image2.getView();
+                        anchorNode.getChildren().get(4).setEnabled(false);
 
                     });
-                    setNode(anchorNode, model, anchorNode.getChildren().get(4).getLocalPosition().x + 0.1f
-                            , anchorNode.getChildren().get(4).getLocalPosition().y - 0.05f,
-                            0.35f, instrutions_label);
-
-                    TextView t2 = (TextView) instrutions_label.getView();
-                    t2.setText("Instruções");
+//                    setNode(anchorNode, model, anchorNode.getChildren().get(4).getLocalPosition().x + 0.1f
+//                            , anchorNode.getChildren().get(4).getLocalPosition().y - 0.05f,
+//                            0.35f, instrutions_label);
+//
+//                    TextView t2 = (TextView) instrutions_label.getView();
+//                    t2.setText("Instruções");
                 }////////////////////////////////////////////////////////////
                 if (i == 2) {
                     j++;
@@ -425,27 +420,27 @@ public class AugmentedReality extends AppCompatActivity {
                         j++;
                     });
                     //generate a report
-                    setNode(anchorNode, model, anchorNode.getChildren().get(7).getLocalPosition().x - 0.1f
-                            , anchorNode.getChildren().get(7).getLocalPosition().y - 0.05f,
+                    setNode(anchorNode, model, anchorNode.getChildren().get(6).getLocalPosition().x - 0.1f
+                            , anchorNode.getChildren().get(6).getLocalPosition().y - 0.01f,
                             0.35f, resolvido_label3);
                     TextView t4 = (TextView) resolvido_label3.getView();
                     t4.setOnClickListener(view -> {
                         Toast.makeText(getBaseContext(),"Problem Solved",
                                 Toast.LENGTH_SHORT).show();
                         listproblemsSolved.add(idnomes.get(2));
-                        changeImage(anchorNode,7,0f
+                        changeImage(anchorNode,3,0f
                                 , 0.1f, 0.35f,correct_image3);
                         correct_image3.getView();
 
                     });
 
-                    setNode(anchorNode, model, anchorNode.getChildren().get(7).getLocalPosition().x + 0.1f
-                            , anchorNode.getChildren().get(7).getLocalPosition().y - 0.05f,
-                            0.35f, instrutions_label);
-
-
-                    TextView t2 = (TextView) instrutions_label.getView();
-                    t2.setText("Instruções");
+//                    setNode(anchorNode, model, anchorNode.getChildren().get(7).getLocalPosition().x + 0.1f
+//                            , anchorNode.getChildren().get(7).getLocalPosition().y - 0.05f,
+//                            0.35f, instrutions_label);
+//
+//
+//                    TextView t2 = (TextView) instrutions_label.getView();
+//                    t2.setText("Instruções");
 
 
 
@@ -470,7 +465,7 @@ public class AugmentedReality extends AppCompatActivity {
         anchorNode.getChildren().get(nalert).setEnabled(false);
         //anchorNode.removeChild(anchorNode.getChildren().get(nalert));
 
-        Toast.makeText(getBaseContext(),"Actualizadooooooo",
+        Toast.makeText(getBaseContext(),"repaired",
                 Toast.LENGTH_SHORT).show();
     }
 

@@ -119,9 +119,9 @@ public class Inicialize extends AppCompatActivity {
     });
 
     // Place or remove a hat on Andy's head showing how to use Skeleton Nodes.
-    hatButton = findViewById(R.id.hat);
-    hatButton.setEnabled(false);
-    hatButton.setOnClickListener(this::onToggleHat);
+   // hatButton = findViewById(R.id.hat);
+   // hatButton.setEnabled(false);
+   // hatButton.setOnClickListener(this::onToggleHat);
   }
 
   @RequiresApi(api = Build.VERSION_CODES.N)
@@ -173,7 +173,7 @@ public class Inicialize extends AppCompatActivity {
       andy.setParent(anchorNode);
       andy.setRenderable(andyRenderable);
       andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180));;
-      hatNode = new Node();
+      //hatNode = new Node();
 
       // Attach a node to the bone.  This node takes the internal scale of the bone, so any
       // renderables should be added to child nodes with the world pose reset.
@@ -183,17 +183,17 @@ public class Inicialize extends AppCompatActivity {
       //boneNode.setParent(andy2);
       andy.setBoneAttachment(HAT_BONE_NAME, boneNode);
      // andy2.setBoneAttachment(HAT_BONE_NAME2, boneNode);
-      hatNode.setRenderable(hatRenderable);
-      hatNode.setParent(boneNode);
-      hatNode.setWorldScale(Vector3.one());
-      hatNode.setWorldRotation(Quaternion.identity());
-      hatNode.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180));;
-      Vector3 pos = hatNode.getWorldPosition();
+    //  hatNode.setRenderable(hatRenderable);
+    //  hatNode.setParent(boneNode);
+     // hatNode.setWorldScale(Vector3.one());
+     // hatNode.setWorldRotation(Quaternion.identity());
+     // hatNode.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180));;
+      //Vector3 pos = hatNode.getWorldPosition();
 
       // Lower the hat down over the antennae.
-      pos.y -= .1f;
+      //pos.y -= .1f;
 
-      hatNode.setWorldPosition(pos);
+     // hatNode.setWorldPosition(pos);
     }
   }
   /**
@@ -206,34 +206,34 @@ public class Inicialize extends AppCompatActivity {
           if (animationButton.isEnabled()) {
               animationButton.setBackgroundTintList(ColorStateList.valueOf(android.graphics.Color.GRAY));
               animationButton.setEnabled(false);
-              hatButton.setBackgroundTintList(ColorStateList.valueOf(android.graphics.Color.GRAY));
-              hatButton.setEnabled(false);
+             // hatButton.setBackgroundTintList(ColorStateList.valueOf(android.graphics.Color.GRAY));
+             // hatButton.setEnabled(false);
           }
       } else {
           if (!animationButton.isEnabled()) {
               animationButton.setBackgroundTintList(
                       ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
               animationButton.setEnabled(true);
-              hatButton.setEnabled(true);
-              hatButton.setBackgroundTintList(
-                      ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+            //  hatButton.setEnabled(false);
+             // hatButton.setBackgroundTintList(
+                     // ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
           }
       }
   }
 
   private void onToggleHat(View unused) {
-    if (hatNode != null) {
-      hatNode.setEnabled(!hatNode.isEnabled());
+   // if (hatNode != null) {
+     // hatNode.setEnabled(!hatNode.isEnabled());
 
       // Set the state of the hat button based on the hat node.
-      if (hatNode.isEnabled()) {
-        hatButton.setBackgroundTintList(
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
-      } else {
-        hatButton.setBackgroundTintList(
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
-      }
-    }
+    //  if (hatNode.isEnabled()) {
+      //  hatButton.setBackgroundTintList(
+           // ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorPrimary)));
+     // } else {
+        //hatButton.setBackgroundTintList(
+         //   ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+      //}
+   // }
   }
 
   void setRenderable(int id, ModelRenderable renderable) {

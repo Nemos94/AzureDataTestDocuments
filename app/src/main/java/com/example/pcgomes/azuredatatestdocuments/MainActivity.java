@@ -82,15 +82,15 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(c);
 //            }
 //        });
-        Button qr = findViewById(R.id.buttonQrCode);
-        qr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent c = new Intent(getApplicationContext(), QrCodeActivity.class);
-                startActivity(c);
-            }
-        });
+//        Button qr = findViewById(R.id.buttonQrCode);
+//        qr.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent c = new Intent(getApplicationContext(), QrCodeActivity.class);
+//                startActivity(c);
+//            }
+//        });
         AzureData.configure(getApplicationContext(), "iotprivatenewsqldb",
                 "7E9XRXFSmbOf8EZw8Z2aeakp278EhvN1jPmksYlXlOpoaR5pLLBF7ppjFnYzUfwhBjQxsb7f21xGHd29NJaABg==", PermissionMode.All, onCallback(builder -> {
 
@@ -98,23 +98,23 @@ public class MainActivity extends AppCompatActivity {
 
         callGraphButton = findViewById(R.id.callGraph);
         signOutButton = findViewById(R.id.clearCache);
-        profilebutton = findViewById(R.id.profile);
+       // profilebutton = findViewById(R.id.profile);
         callGraphButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onCallGraphClicked();
             }
         });
 
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                onSignOutClicked(getApplicationContext());
-            }
-        });
-        profilebutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-            }
-        });
+//        signOutButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                onSignOutClicked(getApplicationContext());
+//            }
+//        });
+//        profilebutton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         /* Configure your sample app and save state for this activity */
         sampleApp = new PublicClientApplication(
@@ -257,8 +257,8 @@ public class MainActivity extends AppCompatActivity {
     /* Sets the graph response */
     private void updateGraphUI(JSONObject graphResponse) throws JSONException {
 
-        TextView graphText = findViewById(R.id.graphData);
-        graphText.setText(graphResponse.toString());
+       // TextView graphText = findViewById(R.id.graphData);
+        //graphText.setText(graphResponse.toString());
         displayName = graphResponse.get("displayName").toString();
         id = graphResponse.get("id").toString();
         userPrincipalName = graphResponse.get("userPrincipalName").toString();
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         callGraphButton.setVisibility(View.INVISIBLE);
 
 
-        signOutButton.setVisibility(View.VISIBLE);
+//        signOutButton.setVisibility(View.VISIBLE);
       //  profilebutton.setVisibility(View.VISIBLE);
       //  findViewById(R.id.welcome).setVisibility(View.VISIBLE);
       //  ((TextView) findViewById(R.id.welcome)).setText("Welcome, " +
@@ -300,9 +300,9 @@ public class MainActivity extends AppCompatActivity {
         callGraphButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.INVISIBLE);
         profilebutton.setVisibility(View.INVISIBLE);
-        findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
-        findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
-        ((TextView) findViewById(R.id.graphData)).setText("No Data");
+       // findViewById(R.id.welcome).setVisibility(View.INVISIBLE);
+        //findViewById(R.id.graphData).setVisibility(View.INVISIBLE);
+        //((TextView) findViewById(R.id.graphData)).setText("No Data");
 
         Toast.makeText(getBaseContext(), "Signed Out!", Toast.LENGTH_SHORT)
                 .show();

@@ -183,10 +183,12 @@
         android:text="Sign Out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:textColor="#FFFFFF"
         android:background="#00a1f1"
         android:textAllCaps="false"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:id="@+id/clearCache"
         android:visibility="visible" />
 

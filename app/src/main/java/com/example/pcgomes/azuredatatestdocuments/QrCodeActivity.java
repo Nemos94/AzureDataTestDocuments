@@ -158,16 +158,17 @@ public class QrCodeActivity extends Activity {
     }
 
     public void getQuery(){
-
+    String _equipment = "Equipment";
         try
         {
             final ProgressDialog dialog = ProgressDialog.show(QrCodeActivity.this, "", "Loading. Please wait...", true);
 
             Query query = Query.Companion.select()
-                    .from("Equipment")
+                    .from(_equipment)
                     .where("deviceId", _idDevice);
 
-            AzureData.queryDocuments("Equipment", "valuesDatabase", query, DictionaryDocument.class,null, onCallback( response  -> {
+            AzureData.queryDocuments(_equipment, "valuesDatabase", query, DictionaryDocument.class,null,
+                    onCallback( response  -> {
                 Log.e(TAG, "Document list result: " + response.isSuccessful());
 
                     int i = 0;

@@ -5,32 +5,57 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/greaterthan"
     android:orientation="vertical"
     tools:context="com.example.pcgomes.azuredatatestdocuments.MainActivity">
 
-    <TextView
-        android:id="@+id/welcome"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:text="Welcome, "
-        android:textColor="#3f3f3f"
-        android:textSize="50px"
-        android:visibility="visible" />
+        android:layout_height="201dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="IoT &amp; AR"
+            android:textSize="24dp" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/callGraph"
-        android:text="Sign In"
-        android:textColor="#FFFFFF"
-        android:background="#00a1f1"
-        android:drawableLeft="@drawable/icon_report"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:textAllCaps="false" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="#00a1f1"
+        android:drawableLeft="@drawable/icon_report"
+        android:text="Sign In"
+        android:paddingRight="23dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
     <Button
+        android:id="@+id/about"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:background="#00a1f1"
+        android:textAlignment="center"
+        android:drawableLeft="@drawable/information"
+
+        android:paddingRight="23dp"
+        android:text="About"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF" />
+   <!-- <Button
         android:id="@+id/buttonQrCode"
         android:text="QR Code"
         android:textColor="#FFFFFF"
@@ -39,17 +64,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        android:textAllCaps="false" />
-    <TextView
-        android:text="Getting Graph Data..."
-        android:textColor="#3f3f3f"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:id="@+id/graphData"
-        android:visibility="invisible"/>
+        android:textAllCaps="false" />-->
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="1"
@@ -75,7 +92,7 @@
             android:background="#00a1f1"
             android:textAllCaps="false"
             android:id="@+id/profile"
-            android:visibility="invisible" />
+            android:visibility="invisible" />-->
 
         <!--  <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/fragment_frame"
@@ -83,4 +100,3 @@
               android:name="com.azuresamples.msalandroidapp.MainFragment"
               android:layout_height="match_parent" />-->
     </LinearLayout>
-</LinearLayout>
